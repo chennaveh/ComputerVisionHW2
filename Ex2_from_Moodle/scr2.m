@@ -147,12 +147,21 @@ clc; clear all; close all;
     e_R = proj(M_R, COP_L);
  
 % Fundamental matrix
-    e_L_h = [e_L ; 1]; % homogeneous coordinates
-    M_e_L = [0 -e_L_h(3) e_L_h(2) ; e_L_h(3) 0 -e_L_h(1) ; -e_L_h(2) e_L_h(1) 0 ]; % skewed symmetric matrix
-    F = M_e_L * M_L * pinv(M_R);
+    e_R_h = [e_R ; 1]; % homogeneous coordinates
+    M_e_R = [0          -e_R_h(3)  e_R_h(2) 
+             e_R_h(3)   0          -e_R_h(1) 
+            -e_R_h(2)   e_R_h(1)   0 ]; % skewed symmetric matrix
+        
+    F = M_e_R * M_R * pinv(M_L);
 
 % Please normalize F by F(3,3).
-F = F / F(3, 3);
+    F = F / F(3, 3);
+    
+    e_L_h = [e_L ; 1]; % homogeneous coordinates
+
+% F-Epipoles consistency check
+    % e_R_h' * F
+    % F * e_L_h
  
    
  %{
