@@ -136,23 +136,26 @@ clc; clear all; close all;
     figure(f4);
     plot(q_R(1),q_R(2),'*r');
     
-%{
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A(5-7)compute the fundamnral matrix F, the epipoles e_L   % 
 % and e_R,                                       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Epipoles
+    e_L = proj(M_L, COP_R);
+    e_R = proj(M_R, COP_L);
+ 
+% Fundamental matrix
+    e_L_h = [e_L ; 1]; % homogeneous coordinates
+    M_e_L = [0 -e_L_h(3) e_L_h(2) ; e_L_h(3) 0 -e_L_h(1) ; -e_L_h(2) e_L_h(1) 0 ]; % skewed symmetric matrix
+    F = M_e_L * M_L * pinv(M_R);
+
+% Please normalize F by F(3,3).
+F = F / F(3, 3);
+ 
    
- 
-     e_L=
-     e_R=
- 
-     F=
-     
- % Please normalize F by F(3,3).
- 
-   
- 
+ %{
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  % A(8) Draw epipolar lines                           
  % You have to write the function
