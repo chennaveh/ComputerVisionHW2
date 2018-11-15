@@ -90,7 +90,7 @@ clc; clear all; close all;
     Q=[30,100,2000]'; 
     q_L=proj(M_L,Q);
     q_R=proj(M_R,Q);
-    
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Read the images into im1 and im2,  and dispaly them.      %
 % Using the command figure(f1) will redisplay the figure    %
