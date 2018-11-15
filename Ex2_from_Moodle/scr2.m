@@ -60,11 +60,12 @@ clc; clear all; close all;
               0       0      1   ];
       
     % Compute the projection matrix
-    RotationMatrix = R_R;
-    RotationMatrix(4, 4) = 1;
-    TranslationMatrix = [eye(3) T_R];
-    
-    M_R = Mint_R * TranslationMatrix * RotationMatrix;
+    Mext_R = eye(4);
+    Mext_R(1:3,1:3) = R_R;
+    Mext_R(1:3, 4) = -R_R*T_R;
+    aux = [eye(3), zeros([3 1])];
+
+    M_R = Mint_R * aux * Mext_R;
 
     % Compute 
     % COP_L already calculated
@@ -135,8 +136,7 @@ clc; clear all; close all;
     figure(f4);
     plot(q_R(1),q_R(2),'*r');
     
-  
-    
+%{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A(5-7)compute the fundamnral matrix F, the epipoles e_L   % 
 % and e_R,                                       %
@@ -240,7 +240,7 @@ end
 
 %% ADD YOUR PART HERE
 
-
+%}
 
  
   
