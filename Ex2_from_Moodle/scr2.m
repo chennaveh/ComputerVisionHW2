@@ -2,70 +2,77 @@
 % A(1) Fill in the missing values, given the partial values of the parameters 
 %of the left and right cameras
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+clc; clear all; close all;
 % Image L
- % You are given
- % The projection matrix
-    M_L= [1100.504780,0,331.023000,0; 0, 1097.763735,259.386377, 0; 0, 0,1,0]
-    
- %Rotation: 
-     R_L=[ 1  0 0 
-         0 1 0
-         0 0 1]
-%Focal length: 
-    f_L=1.0
-    
-% Compute COP1:
-  T_L=
+    % You are given
+    % The projection matrix
+    M_L= [1100.504780,0,331.023000,0; 0, 1097.763735,259.386377, 0; 0, 0,1,0];
+    % M_L=[3.53553e+2, 3.39645e+2, 2.77744e+2, -1.44946e+6; -1.03528e+2, 2.33212e+1, 4.59607e+2, -6.32525e+5; 7.07107e-1 , -3.53553e-1, 6.12372e-1, -9.18559e+2];
 
-%Compute the image center: 
-     ox_L = 
-     oy_L =  
-     
-% compute the scale factor:
-     Sx_L =  
-     Sy_L = 
-     
- % Compute intrinsic projection matrices: 
+    %Rotation: 
+     R_L=[1 0 0 
+          0 1 0
+          0 0 1];
+    %Focal length: 
+    f_L=1.0;
 
-    Mint_L=    
+    % Compute COP1:
+    Null_vector = null(M_L);
+    COP_L = Null_vector(1:3, :) / Null_vector(4);
+
+    %Compute the image center:
+    ox_L = M_L(1, 3);
+    oy_L = M_L(2, 3);
+
+    % compute the scale factor:
+    Sx_L = M_L(1, 1);
+    Sy_L = M_L(2, 2);
+
+    % Compute intrinsic projection matrices: 
+    Mint_L = M_L(:,1:3);
      
 % Image R: 
 %You are given the intrinsic parameters: 
     %Image center: 
-    ox_R = 320.798101, 
-    oy_R = 236.431326,
+    ox_R = 320.798101;
+    oy_R = 236.431326;
 
     % Scale factor: 
-    Sx_R = 1095.671499, 
-    Sy_R = 1094.559584 
+    Sx_R = 1095.671499;
+    Sy_R = 1094.559584;
    
     % Focal length: 
-    f_R=1
+    f_R=1;
      
     % Translation w.r.t. the world origin
     T_R=-[178.2218
           18.8171
-          -13.7744]
+          -13.7744];
     % Rotation
-    R_R =[
-         0.9891    0.0602   -0.1346
-        -0.0590    0.9982    0.0134
-         0.1351   -0.0053    0.9908]
+    R_R =[0.9891    0.0602   -0.1346
+         -0.0590    0.9982    0.0134
+          0.1351   -0.0053    0.9908];
 
-% Compute intrinsic projection matrices: Mint1 and Mint2
+    % Compute intrinsic projection matrices: Mint1 and Mint2
 
-   Mint_R=
+    Mint_R = [Sx_R    0      ox_R
+              0       Sy_R   oy_R
+              0       0      1   ];
       
-% Compute the projection matrix
-    M_R=
-
-% Compute 
-    COP_L = 
-    COP_R = 
+    % Compute the projection matrix
+    RotationMatrix = R_R;
+    RotationMatrix(4, 4) = 1;
+    TranslationMatrix = [eye(3) T_R];
     
-% What is the distance between COP_L and COP_R?
-D=
+    M_R = Mint_R * TranslationMatrix * RotationMatrix;
+
+    % Compute 
+    % COP_L already calculated
+    Null_vector = null(M_R);
+    COP_R = Null_vector(1:3, :) / Null_vector(4);
+    
+    % What is the distance between COP_L and COP_R?
+    D = norm(COP_R - COP_L);
     
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
