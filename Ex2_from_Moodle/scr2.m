@@ -131,7 +131,7 @@ clc; clear all; close all;
     f4=gcf;
     
     figure(f3);
-    plot(q_L(1),q_R(2),'*r');
+    plot(q_L(1),q_L(2),'*r');
     
     figure(f4);
     plot(q_R(1),q_R(2),'*r');
@@ -145,7 +145,7 @@ clc; clear all; close all;
 % Epipoles
     e_L = proj(M_L, COP_R);
     e_R = proj(M_R, COP_L);
- 
+
 % Fundamental matrix
     e_R_h = [e_R ; 1]; % homogeneous coordinates
     M_e_R = [0          -e_R_h(3)  e_R_h(2) 
@@ -163,8 +163,6 @@ clc; clear all; close all;
     % e_R_h' * F
     % F * e_L_h
  
-   
- %{
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  % A(8) Draw epipolar lines                           
  % You have to write the function
@@ -174,22 +172,23 @@ clc; clear all; close all;
  % the function for later use of the figures
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- p=[283,348]';% the selected point
+ %p=[283,348]';% the selected point
  
- draw_epipolar_lines(im_L,im_R,F,p,f1,f2)
+ %draw_epipolar_lines(im_L,im_R,F,p,f1,f2)
 
  figure(f1);
+ %plot(p(1),p(2),'*b');
  
  % Choose points from image 1 (look at help getpts)
  figure(f1);
- [Px,Py]=getpts
+ [Px,Py]=getpts;
  
 % Display the  set of pipolar lines which corresponds to the chosen points
 
-for i=1:length(Px)
-    draw_epipolar_lines(im_L,im_R,F,[Px(i),Py(i)]',f1,f2)
-end
-
+  for i=1:length(Px)
+      draw_epipolar_lines(im_L,im_R,F,[Px(i),Py(i)]',f1,f2)
+  end
+ %{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  % A(9) Featute detection, matching, and remove outliers
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
