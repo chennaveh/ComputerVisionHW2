@@ -172,50 +172,43 @@ clc; clear all; close all;
  % the function for later use of the figures
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- %p=[283,348]';% the selected point
+    figure(f1);
  
- %draw_epipolar_lines(im_L,im_R,F,p,f1,f2)
-
- figure(f1);
- %plot(p(1),p(2),'*b');
- 
- % Choose points from image 1 (look at help getpts)
- figure(f1);
- [Px,Py]=getpts;
+% Choose points from image 1 (look at help getpts)
+    figure(f1);
+    [Px,Py]=getpts;
  
 % Display the  set of pipolar lines which corresponds to the chosen points
 
-  for i=1:length(Px)
-      draw_epipolar_lines(im_L,im_R,F,[Px(i),Py(i)]',f1,f2)
-  end
- %{
+    for i=1:length(Px)
+        draw_epipolar_lines(im_L,im_R,F,[Px(i),Py(i)]',f1,f2)
+    end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  % A(9) Featute detection, matching, and remove outliers
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
  
- Points_L=  detectSURFFeatures(im_L);
- Points_R = detectSURFFeatures(im_R);
+    Points_L = detectSURFFeatures(im_L);
+    Points_R = detectSURFFeatures(im_R);
  
- % Points_L & Points_R is an array of objects.
- 
- 
- 
- [Features_L, Points_L] = extractFeatures(im_L,Points_L);
- [Features_R, Points_R] = extractFeatures(im_R,Points_R);
- num_points=100;
- 
- figure;
- imshow(im_L);
- title('100 Strongest Feature Points from  left image');
- hold on;
- plot(selectStrongest(Points_L, num_points));
- 
- figure;
- imshow(im_R);
- title('100 Strongest Feature Points from  left image');
- hold on;
- plot(selectStrongest(Points_R, num_points));
+% Points_L & Points_R is an array of objects.
+  
+    [Features_L, Points_L] = extractFeatures(im_L,Points_L);
+    [Features_R, Points_R] = extractFeatures(im_R,Points_R);
+    num_points=100;
+
+    figure;
+    imshow(im_L);
+    title('100 Strongest Feature Points from  left image');
+    hold on;
+    plot(selectStrongest(Points_L, num_points));
+
+    figure;
+    imshow(im_R);
+    title('100 Strongest Feature Points from  left image');
+    hold on;
+    plot(selectStrongest(Points_R, num_points));
    
  
  % Consider feature with index ind_L in the left image.
@@ -223,13 +216,22 @@ clc; clear all; close all;
  % in the right image. The list of fetaures in the right image is given by
  % Features_R.
  % Test it for ind_L=10.
- index_R=match_best(Features_L, Features_R, indel_L)
  
+%     ind_L = 10;
+%     ind_R = match_best(Features_L, Features_R, ind_L);
+%     figure; imshow(im_L); title(['best match index = ' ind_L]);
+%     hold on; plot(Points_L(ind_L));
+%     
+%     figure; imshow(im_R); title(['best match index = ' ind_R]);
+%     hold on; plot(Points_R(ind_R));
+    %%
+
  % Use matlab function for matching all the features (instead of applying
  % the oned you wrote)
  
  Pairs = matchFeatures(Features_L, Features_R);
  
+ figure();
  showMatchedFeatures(im_L, im_R,Points_L(Pairs(:,1),:),Points_R(Pairs(:,2),:),'montage');
  
  % Write a function that remove incorrect matches using epipolar geometry. 
@@ -239,7 +241,7 @@ clc; clear all; close all;
 % Use the function  'sampsonDistance()' for computing the distance between a point and a
  % line
  
- Pairs_clean=remove_incorrect_matches(Pairs,Points_L,Points_R,F,th)
+%  Pairs_clean=remove_incorrect_matches(Pairs,Points_L,Points_R,F,th)
  
  % display the matching features as before with only the correct mathced features .
  
@@ -251,7 +253,6 @@ clc; clear all; close all;
 
 %% ADD YOUR PART HERE
 
-%}
 
  
   
