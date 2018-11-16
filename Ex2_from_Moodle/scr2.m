@@ -229,10 +229,12 @@ clc; clear all; close all;
  % Use matlab function for matching all the features (instead of applying
  % the oned you wrote)
  
- Pairs = matchFeatures(Features_L, Features_R);
- 
- figure();
- showMatchedFeatures(im_L, im_R,Points_L(Pairs(:,1),:),Points_R(Pairs(:,2),:),'montage');
+    Pairs = matchFeatures(Features_L, Features_R);
+
+    figure();
+    subplot(2,1,1);
+    showMatchedFeatures(im_L, im_R,Points_L(Pairs(:,1),:),Points_R(Pairs(:,2),:),'montage');
+    title('Matching points');
  
  % Write a function that remove incorrect matches using epipolar geometry. 
  %  That is, any pairs that is not consistent with the epipolar geometry should be removed.
@@ -241,8 +243,12 @@ clc; clear all; close all;
 % Use the function  'sampsonDistance()' for computing the distance between a point and a
  % line
  
-%  Pairs_clean=remove_incorrect_matches(Pairs,Points_L,Points_R,F,th)
- 
+    th = 10;
+    Pairs_clean = remove_incorrect_matches(Pairs,Points_L,Points_R,F,th);
+    subplot(2,1,2);
+    showMatchedFeatures(im_L, im_R,Points_L(Pairs_clean(:,1),:),Points_R(Pairs_clean(:,2),:),'montage');
+    title(['Matching points after incorrect points removed. th = ', num2str(th)]);
+     
  % display the matching features as before with only the correct mathced features .
  
  
