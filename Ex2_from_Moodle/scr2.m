@@ -290,7 +290,7 @@ figure(f2);
 [Px,Py]=getpts;
 ps2 = [Px,Py];
 
-P = stereo_list(ps1,ps2, ML,MR);
+P = stereo_list(ps1,ps2, M_L,M_R);
 
 p_L=proj(M_L,P);
 p_R=proj(M_R,P);
