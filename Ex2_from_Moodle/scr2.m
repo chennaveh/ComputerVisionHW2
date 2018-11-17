@@ -69,7 +69,7 @@ clc; clear all; close all;
     aux = [eye(3), zeros([3 1])];
 
     M_R = Mint_R * aux * Mext_R;
-
+    M_L= [1100.504780,0,331.023000,0; 0, 1097.763735,259.386377, 0; 0, 0,1,0];
     % Compute 
     % COP_L already calculated
     Null_vector = null(M_R);
@@ -262,7 +262,42 @@ clc; clear all; close all;
 
 %% ADD YOUR PART HERE
 
-clc; clear all; close all;
+%clc; clear all; close all;
 
- 
+
+im_L=imread('Left.tif');
+im_R=imread('Right.tif');
+
+figure;
+imshow(im_L,[])
+hold on;
+f1=gcf;
+
+figure;
+imshow(im_R,[])
+hold on;
+f2=gcf;
+
+figure(f1);
+
+% Choose points from image left (look at help getpts)
+figure(f1);
+[Px,Py]=getpts;
+ps1 = [Px,Py];
+
+% Choose points from image right (look at help getpts)
+figure(f2);
+[Px,Py]=getpts;
+ps2 = [Px,Py];
+
+P = stereo_list(ps1,ps2, ML,MR);
+
+p_L=proj(M_L,P);
+p_R=proj(M_R,P);
+
+%does p_L equal to ps1?
+errorLeft = abs(p_L-ps1);
+%does p_R equal to ps2?
+errorRight = abs(p_R-ps2);
+
   
