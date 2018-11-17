@@ -209,7 +209,7 @@ clc; clear all; close all;
 
     figure;
     imshow(im_R);
-    title('100 Strongest Feature Points from  left image');
+    title('100 Strongest Feature Points from  left image');%TODO - shoud it be right image?
     hold on;
     plot(selectStrongest(Points_R, num_points));
    
