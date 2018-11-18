@@ -265,20 +265,20 @@ clc; clear all; close all;
 %clc; clear all; close all;
 
 
-im_L=imread('Left.tif');
-im_R=imread('Right.tif');
+% im_L=imread('Left.tif');
+% im_R=imread('Right.tif');
+% 
+% figure;
+% imshow(im_L,[])
+% hold on;
+% f1=gcf;
+% 
+% figure;
+% imshow(im_R,[])
+% hold on;
+% f2=gcf;
 
-figure;
-imshow(im_L,[])
-hold on;
-f1=gcf;
-
-figure;
-imshow(im_R,[])
-hold on;
-f2=gcf;
-
-figure(f1);
+% figure(f1);
 
 % Choose points from image left (look at help getpts)
 figure(f1);
@@ -296,8 +296,26 @@ p_L=proj(M_L,P);
 p_R=proj(M_R,P);
 
 %does p_L equal to ps1?
-errorLeft = abs(p_L-ps1);
+errorLeft = abs(p_L-ps1');
 %does p_R equal to ps2?
-errorRight = abs(p_R-ps2);
+errorRight = abs(p_R-ps2');
+
+figure(f1);
+plot(p_L(1),p_L(2),'*r');
+
+figure(f2);
+plot(p_R(1),p_R(2),'*r');
+
+%% Part C %%
+
+    im_L=imread('view1.tif'); %TODO - should it be view1.png or we have another typo
+    im_R=imread('view5.tif');
+    
+    T = 0.16; %distance between 2 cameras in meters
+    
+    D_out = disparityCalc(im_L,im_R,3,3,40,120);
+    
+    figure(10);
+    imshow(D_out,[]);
 
   
