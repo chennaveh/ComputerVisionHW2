@@ -277,12 +277,16 @@ clc; clear all; close all;
 % figure(f1);
 
 % Choose points from image left (look at help getpts)
-figure(f14);
+figure;
+imshow(im_L,[])
+hold on;
 [Px,Py]=getpts;
 ps1 = [Px,Py];
 
 % Choose points from image right (look at help getpts)
-figure(f15);
+figure;
+imshow(im_R,[])
+hold on;
 [Px,Py]=getpts;
 ps2 = [Px,Py];
 
