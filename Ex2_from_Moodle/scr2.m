@@ -7,7 +7,6 @@ clc; clear all; close all;
     % You are given
     % The projection matrix
     M_L= [1100.504780,0,331.023000,0; 0, 1097.763735,259.386377, 0; 0, 0,1,0];
-    %TODO - isn't the M(3,3)==1? (according to class 4 slide 9)?
     % M_L=[3.53553e+2, 3.39645e+2, 2.77744e+2, -1.44946e+6; -1.03528e+2, 2.33212e+1, 4.59607e+2, -6.32525e+5; 7.07107e-1 , -3.53553e-1, 6.12372e-1, -9.18559e+2];
 
     %Rotation: 
@@ -17,9 +16,6 @@ clc; clear all; close all;
     %Focal length: 
     f_L=1.0;
 
-    % Compute COP1: %TODO - why? it is true according to slides but i need
-    % a clarification
-    % ceneter?
     Null_vector = null(M_L);
     COP_L = Null_vector(1:3, :) / Null_vector(4);
 
@@ -317,5 +313,12 @@ plot(p_R(1),p_R(2),'*r');
     
     figure(10);
     imshow(D_out,[]);
+    title('disparity map view1 and view5');
+    
+    %C.e
+    D2d = zeros(size(im_L,1),size(im_L,2),2);
+    D2d(:,:,2) = D_out;
+    d = imwarp(im_L,D2d);
+    
 
   
