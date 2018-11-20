@@ -277,12 +277,12 @@ clc; clear all; close all;
 % figure(f1);
 
 % Choose points from image left (look at help getpts)
-figure(f1);
+figure(f14);
 [Px,Py]=getpts;
 ps1 = [Px,Py];
 
 % Choose points from image right (look at help getpts)
-figure(f2);
+figure(f15);
 [Px,Py]=getpts;
 ps2 = [Px,Py];
 
@@ -317,8 +317,42 @@ plot(p_R(1),p_R(2),'*r');
     
     %C.e
     D2d = zeros(size(im_L,1),size(im_L,2),2);
-    D2d(:,:,2) = D_out;
+    D2d(:,:,1) = D_out;
     d = imwarp(im_L,D2d);
     
-
-  
+    % C.f - TODO - what does it mean to do a simple triangulation? i
+    % already have the disparity map....?
+    %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
+    Z = T\D_out;
+    Z=Z+100;
+    figure(11);
+    imshow(Z,[]);
+    title('depth map with 100 ');
+    
+    % Qc.g - Repeat c-f 
+    [Fx,Fy] = gradient(double(im_L));
+    im_L = (Fx.^2 + Fy.^2).^0.5;
+    
+    [Fx,Fy] = gradient(double(im_R));
+    im_R = (Fx.^2 + Fy.^2).^0.5;
+        
+    D_out = disparityCalc(im_L,im_R,3,3,40,120);
+    figure(12);
+    imshow(D_out,[]);
+    title('disparity map view1 and view5 with gradients');
+    
+     %C.e
+    D2d = zeros(size(im_L,1),size(im_L,2),2);
+    D2d(:,:,1) = D_out;
+    d = imwarp(im_L,D2d);
+    
+    % C.f - TODO - what does it mean to do a simple triangulation? i
+    % already have the disparity map....?
+    %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
+    Z = T\D_out;
+    Z=Z+100;
+    figure(11);
+    imshow(Z,[]);
+    title('depth map with 100 ');
+    
+    

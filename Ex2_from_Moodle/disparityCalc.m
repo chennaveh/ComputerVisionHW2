@@ -24,9 +24,18 @@ for i=ceil(Sx/2)+d_min:new_width-ceil(Sx/2)+1-d_max
         %need to add minimum on the range dmin:dmax
         v1 = reshape (im1_padded(j-Sy_half_flr:j+Sy_half_flr,i-Sx_half_flr :i+Sx_half_flr),[1,Sx*Sy]);
         v2 = reshape (im2_padded(j-Sy_half_flr:j+Sy_half_flr,i-Sx_half_flr+d_max :i+Sx_half_flr+d_max ),[1,Sx*Sy]);
-        
-        Cosine_distance = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));
-        D(j-Sy_half_flr,i-Sx_half_flr) = Cosine_distance;
+ 
+        distance = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));        
+        D(j-Sy_half_flr,i-Sx_half_flr) = distance;
+%         if strcmpi(distanceAlgo,'Cosine')
+%             distance = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));
+%         elseif strcmpi(distanceAlgo,'Gradient')
+%             [G_X,G_Y] = gradient(v1,v2);
+%             distance = (G_X.^2 + G_Y.^2).^0.5;
+%         else
+%             distance = 0;
+%         end 
+%         D(j-Sy_half_flr,i-Sx_half_flr) = distance;
     end
 end
 end
