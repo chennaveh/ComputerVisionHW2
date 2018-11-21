@@ -1,9 +1,9 @@
 function [P] = stereo_list(ps1,ps2, ML,MR)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-%?? and ?? are ?× 2 where m is the number of points
+%ps1 and ps2 are m× 2 where m is the number of points
 
-%turn ps1 and ps2 to homogenous
+%turn ps1 and ps2 to homogenous by adding a column of 1
 p_l = [ps1 ones(size(ps1,1),1)];
 p_r = [ps2 ones(size(ps2,1),1)];
 
@@ -18,13 +18,12 @@ COP_L = Null_vector(1:3, :) / Null_vector(4);
 S_L = p_l*pinv(ML)';
 S_R = p_r*pinv(MR)';
 
-%U_L = (S_L/S_L(:,4))-COP_L;%change U to be just (X Y Z) cuz the point is in inf
+%change U to be just (X Y Z) cuz the point is in inf
+S_L(:,4)= double(S_L(:,4)==zeros(size(S_L(2),1))) + S_L(:,4); %in case of a point in infinity
+S_R(:,4)= double(S_R(:,4)==zeros(size(S_R(2),1))) + S_R(:,4); %in case of a point in infinity
 
-S_L(:,4)= double(S_L(:,4)==0) + S_L(:,4); %in case of a point in infinity
-S_R(:,4)= double(S_R(:,4)==0) + S_R(:,4); %in case of a point in infinity
-
-S_L_nh = S_L(:,1:3)/S_L(:,4);
-S_R_nh = S_R(:,1:3)/S_R(:,4);
+S_L_nh = S_L(:,1:3)./repmat(S_L(:,4),1,3);
+S_R_nh = S_R(:,1:3)./repmat(S_R(:,4),1,3);
 
 U_L = S_L_nh-COP_L';
 U_R = S_R_nh-COP_R';
@@ -32,17 +31,23 @@ U_R = S_R_nh-COP_R';
 %b = COP_L-COP_R
 
 dominator = (COP_L-COP_R);
-lambda=[(-1)*U_L;U_R]'\dominator ;
+lambda=[(-1)*U_L;U_R]'\dominator ;% TODO - make sure this is true!
 
 %based on lambda recover the point P
-PR = lambda(2)*COP_R' + (1-lambda(2))*(S_R_nh);
-PL = lambda(1)*COP_L' + (1-lambda(1))*(S_L_nh);
+x=1;
+for i=1:2:size(lambda)
+    PL(x,:,:) = lambda(i)*COP_L' + (1-lambda(i))*(S_L_nh);
+    PR(x,:,:) = lambda(i+1)*COP_R' + (1-lambda(i+1))*(S_R_nh);
+    x=x+1;
+end
 
-P = ((PR + PL)/2)';%find the avarage between reconstruction of left and right
+
+P = ((PR + PL)/2);%find the avarage between reconstruction of left and right
 %P = (P(:,1:3)/P(:,4))';
 
-p_L=proj(ML,P);
-p_R=proj(MR,P);
+%-TODO - fix the sanity check
+p_L=proj(repmat(ML,2,1),P);
+p_R=proj(repmat(MR,2,1),P);
 
 end
 
