@@ -36,18 +36,14 @@ lambda=[(-1)*U_L;U_R]'\dominator ;% TODO - make sure this is true!
 %based on lambda recover the point P
 x=1;
 for i=1:2:size(lambda)
-    PL(x,:,:) = lambda(i)*COP_L' + (1-lambda(i))*(S_L_nh);
-    PR(x,:,:) = lambda(i+1)*COP_R' + (1-lambda(i+1))*(S_R_nh);
+    PL(x,:) = lambda(i)*COP_L' + (1-lambda(i))*(S_L_nh(x,:));
+    PR(x,:) = lambda(i+1)*COP_R' + (1-lambda(i+1))*(S_R_nh(x,:));
     x=x+1;
 end
 
-
+%P=PL;
 P = ((PR + PL)/2);%find the avarage between reconstruction of left and right
 %P = (P(:,1:3)/P(:,4))';
-
-%-TODO - fix the sanity check
-p_L=proj(repmat(ML,2,1),P);
-p_R=proj(repmat(MR,2,1),P);
 
 end
 

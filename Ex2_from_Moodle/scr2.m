@@ -280,6 +280,7 @@ clc; clear all; close all;
 figure;
 imshow(im_L,[])
 hold on;
+f10=gcf;
 [Px,Py]=getpts;
 ps1 = [Px,Py];
 
@@ -287,25 +288,31 @@ ps1 = [Px,Py];
 figure;
 imshow(im_R,[])
 hold on;
+f11=gcf;
 [Px,Py]=getpts;
 ps2 = [Px,Py];
 
 P = stereo_list(ps1,ps2, M_L,M_R);
 
-p_L=proj(repmat(ML,2,1),P);
-p_R=proj(repmat(MR,2,1),P);
+p_L = zeros(size(ps1,1),2);
+p_R = zeros(size(ps2,1),2);
+for i=1:size(P,1)
+    p_L(i,:)=proj(M_L,P(i,:)');
+    p_R(i,:)=proj(M_R,P(i,:)');
+    
+    %does p_L equal to ps1?
+    errorLeft = abs(p_L(i,:)-ps1(i,:));
+    %does p_R equal to ps2?
+    errorRight = abs(p_R(i,:)-ps2(i,:));
+end
 
-%does p_L equal to ps1?
-errorLeft = abs(p_L-ps1');
-%does p_R equal to ps2?
-errorRight = abs(p_R-ps2');
+figure(f10);
+%plot(p_L,'*r');
+plot([p_L(:,1)],[p_L(:,2)],'*r');
 
-figure(f1);
-plot(p_L(1),p_L(2),'*r');
-
-figure(f2);
-plot(p_R(1),p_R(2),'*r');
-
+figure(f11);
+plot([p_R(:,1)],[p_R(:,2)],'*r');
+    print 'done'
 %% Part C %%
 
     im_L=imread('view1.tif'); %TODO - should it be view1.png or we have another typo
