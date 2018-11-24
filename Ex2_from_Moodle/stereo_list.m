@@ -41,7 +41,7 @@ for i=1:2:size(lambda)
     x=x+1;
 end
 
-%P=PL;
+%P=PR;
 P = ((PR + PL)/2);%find the avarage between reconstruction of left and right
 %P = (P(:,1:3)/P(:,4))';
 
