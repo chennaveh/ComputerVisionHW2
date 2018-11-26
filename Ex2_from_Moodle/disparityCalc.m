@@ -13,20 +13,30 @@ im1_padded (Sy/2:end-Sy/2, Sx/2:end-Sx/2) = im1;
 
 im2_padded = zeros(new_height,new_width); % pad zero frame
 im2_padded(Sy/2:end-Sy/2, Sx/2:end-Sx/2) = im2;
+%mem = zeros(size(im2_padded))-1;
 D = zeros(size(im1));
 
 %loop over epipolar lines and for each pair calc the disparity
 Sy_half_flr = floor(Sy/2);
 Sx_half_flr = floor(Sx/2);
 
-for i=ceil(Sx/2)+d_min:new_width-ceil(Sx/2)+1-d_max
+for i=ceil(Sx/2):new_width-ceil(Sx/2)
     for j=ceil(Sy/2):new_height-ceil(Sy/2)+1
         %need to add minimum on the range dmin:dmax
         v1 = reshape (im1_padded(j-Sy_half_flr:j+Sy_half_flr,i-Sx_half_flr :i+Sx_half_flr),[1,Sx*Sy]);
-        v2 = reshape (im2_padded(j-Sy_half_flr:j+Sy_half_flr,i-Sx_half_flr+d_max :i+Sx_half_flr+d_max ),[1,Sx*Sy]);
- 
-        distance = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));        
-        D(j-Sy_half_flr,i-Sx_half_flr) = distance;
+        x=1;
+        for d=i+d_min:i+d_max
+                if d < new_width-ceil(Sx/2)+1
+                 %   if mem(i,d)==-1 %memoization for each pair option i (first pic) and d (second pic)
+                v2 = reshape (im2_padded(j-Sy_half_flr:j+Sy_half_flr,d-Sx_half_flr :d+Sx_half_flr ),[1,Sx*Sy]);
+                distance(x) = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));
+                x=x+1;
+            end
+        end
+        D(j-Sy_half_flr,i-Sx_half_flr) = min(distance);
+    end
+end
+        
 %         if strcmpi(distanceAlgo,'Cosine')
 %             distance = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));
 %         elseif strcmpi(distanceAlgo,'Gradient')
@@ -36,7 +46,5 @@ for i=ceil(Sx/2)+d_min:new_width-ceil(Sx/2)+1-d_max
 %             distance = 0;
 %         end 
 %         D(j-Sy_half_flr,i-Sx_half_flr) = distance;
-    end
-end
 end
 

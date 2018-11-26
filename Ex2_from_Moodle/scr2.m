@@ -314,7 +314,7 @@ figure(f11);
 plot([p_R(:,1)],[p_R(:,2)],'*r');
     print 'done'
 %% Part C %%
-
+    clear all;clc;
     im_L=imread('view1.tif'); %TODO - should it be view1.png or we have another typo
     im_R=imread('view5.tif');
     
@@ -328,7 +328,7 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
     %C.e
     D2d = zeros(size(im_L,1),size(im_L,2),2);
-    D2d(:,:,1) = D_out;
+    D2d(:,:,2) = D_out;
     d = imwarp(im_L,D2d);
     
     % C.f - TODO - what does it mean to do a simple triangulation? i
@@ -354,7 +354,7 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
      %C.e
     D2d = zeros(size(im_L,1),size(im_L,2),2);
-    D2d(:,:,1) = D_out;
+    D2d(:,:,2) = D_out;
     d = imwarp(im_L,D2d);
     
     % C.f - TODO - what does it mean to do a simple triangulation? i
