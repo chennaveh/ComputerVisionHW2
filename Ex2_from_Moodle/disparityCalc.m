@@ -20,31 +20,22 @@ D = zeros(size(im1));
 Sy_half_flr = floor(Sy/2);
 Sx_half_flr = floor(Sx/2);
 
-for i=ceil(Sx/2):new_width-ceil(Sx/2)
+for i=ceil(Sx/2):new_width-ceil(Sx/2)-d_min
     for j=ceil(Sy/2):new_height-ceil(Sy/2)+1
         %need to add minimum on the range dmin:dmax
         v1 = reshape (im1_padded(j-Sy_half_flr:j+Sy_half_flr,i-Sx_half_flr :i+Sx_half_flr),[1,Sx*Sy]);
         x=1;
         for d=i+d_min:i+d_max
-                if d < new_width-ceil(Sx/2)+1
+            if d < new_width-ceil(Sx/2)+1
                  %   if mem(i,d)==-1 %memoization for each pair option i (first pic) and d (second pic)
                 v2 = reshape (im2_padded(j-Sy_half_flr:j+Sy_half_flr,d-Sx_half_flr :d+Sx_half_flr ),[1,Sx*Sy]);
                 distance(x) = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));
                 x=x+1;
             end
         end
-        D(j-Sy_half_flr,i-Sx_half_flr) = min(distance);
+        [~, index] = min(distance);
+        D(j-Sy_half_flr,i-Sx_half_flr) = index;
     end
 end
-        
-%         if strcmpi(distanceAlgo,'Cosine')
-%             distance = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));
-%         elseif strcmpi(distanceAlgo,'Gradient')
-%             [G_X,G_Y] = gradient(v1,v2);
-%             distance = (G_X.^2 + G_Y.^2).^0.5;
-%         else
-%             distance = 0;
-%         end 
-%         D(j-Sy_half_flr,i-Sx_half_flr) = distance;
 end
 

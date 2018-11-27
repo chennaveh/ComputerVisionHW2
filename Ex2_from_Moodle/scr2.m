@@ -61,7 +61,7 @@ clc; clear all; close all;
     % Compute the projection matrix
     Mext_R = eye(4);
     Mext_R(1:3,1:3) = R_R;
-    Mext_R(1:3, 4) = -R_R*T_R;
+    Mext_R(1:3, 4) = -R_R*T_R; 
     aux = [eye(3), zeros([3 1])];
 
     M_R = Mint_R * aux * Mext_R;
@@ -307,12 +307,10 @@ for i=1:size(P,1)
 end
 
 figure(f10);
-%plot(p_L,'*r');
 plot([p_L(:,1)],[p_L(:,2)],'*r');
 
 figure(f11);
 plot([p_R(:,1)],[p_R(:,2)],'*r');
-    print 'done'
 %% Part C %%
     clear all;clc;
     im_L=imread('view1.tif'); %TODO - should it be view1.png or we have another typo
@@ -320,25 +318,28 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
     T = 0.16; %distance between 2 cameras in meters
     
-    D_out = disparityCalc(im_L,im_R,3,3,40,120);
+    D_out = disparityCalc(im_L,im_R,5,5,40,120);
     
     figure(10);
     imshow(D_out,[]);
-    title('disparity map view1 and view5');
+    title('Disparity map view1 and view5');
     
     %C.e
     D2d = zeros(size(im_L,1),size(im_L,2),2);
     D2d(:,:,2) = D_out;
     d = imwarp(im_L,D2d);
     
+    figure;
+    imshow(d,[]);
+    title('Back project view1 to view5');
+    
     % C.f - TODO - what does it mean to do a simple triangulation? i
-    % already have the disparity map....?
     %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
-    Z = T\D_out;
+    Z = T*(ones(size(D_out)))./D_out;
     Z=Z+100;
     figure(11);
     imshow(Z,[]);
-    title('depth map with 100 ');
+    title('Depth map using disparity');
     
     % Qc.g - Repeat c-f 
     [Fx,Fy] = gradient(double(im_L));
@@ -348,22 +349,25 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     im_R = (Fx.^2 + Fy.^2).^0.5;
         
     D_out = disparityCalc(im_L,im_R,3,3,40,120);
-    figure(12);
+    figure;
     imshow(D_out,[]);
-    title('disparity map view1 and view5 with gradients');
+    title('Disparity map view1 and view5 with gradients');
     
      %C.e
     D2d = zeros(size(im_L,1),size(im_L,2),2);
     D2d(:,:,2) = D_out;
     d = imwarp(im_L,D2d);
+        
+    figure;
+    imshow(d,[]);
+    title('Back project view1 to view5 with gradients');
     
-    % C.f - TODO - what does it mean to do a simple triangulation? i
-    % already have the disparity map....?
+    % C.f - TODO - what does it mean to do a simple triangulation?
     %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
-    Z = T\D_out;
+    Z = T*(ones(size(D_out)))./D_out;
     Z=Z+100;
-    figure(11);
+    figure;
     imshow(Z,[]);
-    title('depth map with 100 ');
+    title('Depth map with using gradients ');
     
     
