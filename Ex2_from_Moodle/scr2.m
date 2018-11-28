@@ -175,7 +175,7 @@ clc; clear all; close all;
  
 % Choose points from image 1 (look at help getpts)
     figure(f1);
-    [Px,Py]=getpts;
+    [Px,Py]=getpts; %TODO - need save the points for the grader (see note at the end of the PDF)
  
 % Display the  set of pipolar lines which corresponds to the chosen points
 
@@ -282,7 +282,8 @@ imshow(im_L,[])
 hold on;
 f10=gcf;
 [Px,Py]=getpts;
-ps1 = [Px,Py];
+%ps1 = [Px,Py];
+ps1 = [286.0000, 163.0000];
 
 % Choose points from image right (look at help getpts)
 figure;
@@ -290,7 +291,8 @@ imshow(im_R,[])
 hold on;
 f11=gcf;
 [Px,Py]=getpts;
-ps2 = [Px,Py];
+ps2 = [314.0000 ,163.0000];
+%ps2 = [Px,Py];
 
 P = stereo_list(ps1,ps2, M_L,M_R);
 
