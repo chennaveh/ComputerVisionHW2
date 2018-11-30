@@ -320,7 +320,7 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
     T = 0.16; %distance between 2 cameras in meters
     
-    D_out = disparityCalc(im_L,im_R,5,5,40,120);
+    D_out = disparityCalc(im_L,im_R,3,3,40,120);
     
     figure;
     imshow(D_out,[]);
@@ -337,10 +337,9 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
     % C.f - TODO - what does it mean to do a simple triangulation?
     %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
-    Z = T*(ones(size(D_out)))./D_out;
-    Z=Z+100;
+    Z = T*(ones(size(D_out)))./(D_out+100);
     figure(11);
-    imshow(Z,[]);
+    imshow(Z);
     title('Depth map using disparity');
     
     % Qc.g - Repeat c-f 
@@ -366,8 +365,7 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
     % C.f - TODO - what does it mean to do a simple triangulation?
     %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
-    Z = T*(ones(size(D_out)))./D_out;
-    Z=Z+100;
+    Z = T*(ones(size(D_out)))./(D_out+100);
     figure;
     imshow(Z,[]);
     title('Depth map with using gradients ');
