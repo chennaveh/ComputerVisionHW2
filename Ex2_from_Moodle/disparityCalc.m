@@ -20,7 +20,6 @@ im2_padded(Sy_half_flr+1:end-Sy_half_flr, Sx_half_flr+1:end-Sx_half_flr) = im2;
 
 D = zeros(size(im1));
 
-
 for i = 1:height 
     for j = 1:width
         patch1 = im1_padded(i:i+Sy-1, j:j+Sx-1);
@@ -31,8 +30,8 @@ for i = 1:height
             patch2 = im2_padded(i:i+Sy-1, k:k+Sx-1);
             results_vec(k - start_idx + 1) = sum(patch1.*patch2,'all') / sqrt((sum(patch1.^2, 'all')*sum(patch2.^2, 'all')));
         end
-        [~, index] = min(results_vec);
-        D(i,j) = index;
+        [~, index] = max(results_vec);
+        D(i,j) = start_idx + index - j;
     end
 end
 
