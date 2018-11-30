@@ -357,7 +357,7 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
      %C.e
     D2d = zeros(size(im_L,1),size(im_L,2),2);
-    D2d(:,:,2) = D_out;
+    D2d(:,:,1) = D_out;
     d = imwarp(im_L,D2d);
         
     figure;
