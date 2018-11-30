@@ -322,7 +322,7 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
     D_out = disparityCalc(im_L,im_R,5,5,40,120);
     
-    figure(10);
+    figure;
     imshow(D_out,[]);
     title('Disparity map view1 and view5');
     
