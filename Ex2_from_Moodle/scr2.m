@@ -338,8 +338,8 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     % C.f - TODO - what does it mean to do a simple triangulation?
     %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
     Z = T*(ones(size(D_out)))./(D_out+100);
-    figure(11);
-    imshow(Z);
+    figure;
+    imshow(Z,[]);
     title('Depth map using disparity');
     
     % Qc.g - Repeat c-f 
