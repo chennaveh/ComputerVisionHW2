@@ -33,7 +33,7 @@ for i=ceil(Sx/2):new_width-ceil(Sx/2)-d_min
                 x=x+1;
             end
         end
-        [~, index] = min(distance);
+        [~, index] = max(distance);
         D(j-Sy_half_flr,i-Sx_half_flr) = index;
     end
 end
