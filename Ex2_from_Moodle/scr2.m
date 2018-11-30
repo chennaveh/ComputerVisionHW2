@@ -282,8 +282,8 @@ imshow(im_L,[])
 hold on;
 f10=gcf;
 [Px,Py]=getpts;
-%ps1 = [Px,Py];
-ps1 = [286.0000, 163.0000];
+ps1 = [Px,Py];
+%ps1 = [286.0000, 163.0000];
 
 % Choose points from image right (look at help getpts)
 figure;
@@ -291,8 +291,8 @@ imshow(im_R,[])
 hold on;
 f11=gcf;
 [Px,Py]=getpts;
-ps2 = [314.0000 ,163.0000];
-%ps2 = [Px,Py];
+%ps2 = [314.0000 ,163.0000];
+ps2 = [Px,Py];
 
 P = stereo_list(ps1,ps2, M_L,M_R);
 
@@ -315,8 +315,8 @@ figure(f11);
 plot([p_R(:,1)],[p_R(:,2)],'*r');
 %% Part C %%
     clear all;clc;
-    im_L=imread('view1.tif'); %TODO - should it be view1.png or we have another typo
-    im_R=imread('view5.tif');
+    im_L=imread('view5.tif'); %TODO - should it be view1.png or we have another typo
+    im_R=imread('view1.tif');
     
     T = 0.16; %distance between 2 cameras in meters
     
@@ -328,14 +328,14 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
     %C.e
     D2d = zeros(size(im_L,1),size(im_L,2),2);
-    D2d(:,:,2) = D_out;
+    D2d(:,:,1) = D_out;
     d = imwarp(im_L,D2d);
     
     figure;
     imshow(d,[]);
     title('Back project view1 to view5');
     
-    % C.f - TODO - what does it mean to do a simple triangulation? i
+    % C.f - TODO - what does it mean to do a simple triangulation?
     %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
     Z = T*(ones(size(D_out)))./D_out;
     Z=Z+100;
@@ -345,12 +345,12 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     
     % Qc.g - Repeat c-f 
     [Fx,Fy] = gradient(double(im_L));
-    im_L = (Fx.^2 + Fy.^2).^0.5;
+    im_L_grad = (Fx.^2 + Fy.^2).^0.5;
     
     [Fx,Fy] = gradient(double(im_R));
-    im_R = (Fx.^2 + Fy.^2).^0.5;
+    im_R_grad = (Fx.^2 + Fy.^2).^0.5;
         
-    D_out = disparityCalc(im_L,im_R,3,3,40,120);
+    D_out = disparityCalc(im_L_grad,im_R_grad,3,3,40,120);
     figure;
     imshow(D_out,[]);
     title('Disparity map view1 and view5 with gradients');

@@ -27,7 +27,7 @@ for i=ceil(Sx/2):new_width-ceil(Sx/2)-d_min
         x=1;
         for d=i+d_min:i+d_max
             if d < new_width-ceil(Sx/2)+1
-                 %   if mem(i,d)==-1 %memoization for each pair option i (first pic) and d (second pic)
+                %if mem(j,d)==-1 %memoization for each pair option i (first pic) and d (second pic)
                 v2 = reshape (im2_padded(j-Sy_half_flr:j+Sy_half_flr,d-Sx_half_flr :d+Sx_half_flr ),[1,Sx*Sy]);
                 distance(x) = (v1*v2')/(sqrt(sum(v1.^2))*sqrt(sum(v2.^2)));
                 x=x+1;
