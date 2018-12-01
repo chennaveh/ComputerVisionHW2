@@ -104,11 +104,13 @@ clc; clear all; close all;
     figure;
     imshow(im_L,[])
     hold on;
+    title('Left image with projection P');
     f1=gcf;
     
     figure;
     imshow(im_R,[])
     hold on;
+    title('Rigth image with projection P');
     f2=gcf;
 
     % display the projection on the two images
@@ -130,9 +132,11 @@ clc; clear all; close all;
     f4=gcf;
     
     figure(f3);
+    title('Left image with projection Q');
     plot(q_L(1),q_L(2),'*r');
     
     figure(f4);
+    title('Right image with projection Q');
     plot(q_R(1),q_R(2),'*r');
     
 
@@ -176,7 +180,8 @@ clc; clear all; close all;
 % Choose points from image 1 (look at help getpts)
     figure(f1);
     [Px,Py]=getpts; %TODO - need save the points for the grader (see note at the end of the PDF)
- 
+    %pointsForGrader = [286.0000 160.0000];
+    
 % Display the  set of pipolar lines which corresponds to the chosen points
 
     for i=1:length(Px)
@@ -235,52 +240,31 @@ clc; clear all; close all;
     showMatchedFeatures(im_L, im_R,Points_L(Pairs(:,1),:),Points_R(Pairs(:,2),:),'montage');
     title('Matching points');
  
- % Write a function that remove incorrect matches using epipolar geometry. 
- %  That is, any pairs that is not consistent with the epipolar geometry should be removed.
- % Note that we cannot test whether  p^T Fq=0 since it will never be exactly 0 due to noise.
+% Write a function that remove incorrect matches using epipolar geometry. 
+% That is, any pairs that is not consistent with the epipolar geometry should be removed.
+% Note that we cannot test whether  p^T Fq=0 since it will never be exactly 0 due to noise.
 % Hence, you should compute how far the point q is from the epipolar line given by p^T F.
 % Use the function  'sampsonDistance()' for computing the distance between a point and a
- % line
+% line
  
     th = 10;
     Pairs_clean = remove_incorrect_matches(Pairs,Points_L,Points_R,F,th);
     subplot(2,1,2);
     showMatchedFeatures(im_L, im_R,Points_L(Pairs_clean(:,1),:),Points_R(Pairs_clean(:,2),:),'montage');
+% display the matching features as before with only the correct mathced features .
     title(['Matching points after incorrect points removed. th = ', num2str(th)]);
      
- % display the matching features as before with only the correct mathced features .
- 
- 
- 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Calibrated Stereo - Compute Matching
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% ADD YOUR PART HERE
+%% Part B
 
 %clc; clear all; close all;
-
-
-% im_L=imread('Left.tif');
-% im_R=imread('Right.tif');
-% 
-% figure;
-% imshow(im_L,[])
-% hold on;
-% f1=gcf;
-% 
-% figure;
-% imshow(im_R,[])
-% hold on;
-% f2=gcf;
-
-% figure(f1);
 
 % Choose points from image left (look at help getpts)
 figure;
 imshow(im_L,[])
 hold on;
-f10=gcf;
+title('Choose points on left image:')
+f8=gcf;
 [Px,Py]=getpts;
 ps1 = [Px,Py];
 %ps1 = [286.0000, 163.0000];
@@ -289,7 +273,8 @@ ps1 = [Px,Py];
 figure;
 imshow(im_R,[])
 hold on;
-f11=gcf;
+title('Choose corresponded points on right image:')
+f9=gcf;
 [Px,Py]=getpts;
 %ps2 = [314.0000 ,163.0000];
 ps2 = [Px,Py];
@@ -308,14 +293,15 @@ for i=1:size(P,1)
     errorRight = abs(p_R(i,:)-ps2(i,:));
 end
 
-figure(f10);
+figure(f8);
 plot([p_L(:,1)],[p_L(:,2)],'*r');
 
-figure(f11);
+figure(f9);
 plot([p_R(:,1)],[p_R(:,2)],'*r');
+
 %% Part C %%
     clear all;clc;
-    im_L=imread('view5.tif'); %TODO - should it be view1.png or we have another typo
+    im_L=imread('view5.tif');
     im_R=imread('view1.tif');
     
     T = 0.16; %distance between 2 cameras in meters
@@ -335,7 +321,7 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     imshow(d,[]);
     title('Back project view1 to view5');
     
-    % C.f - TODO - what does it mean to do a simple triangulation?
+    % C.f
     %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
     Z = T*(ones(size(D_out)))./(D_out+100);
     figure;
@@ -363,7 +349,7 @@ plot([p_R(:,1)],[p_R(:,2)],'*r');
     imshow(d,[]);
     title('Back project view1 to view5 with gradients');
     
-    % C.f - TODO - what does it mean to do a simple triangulation?
+    % C.f
     %Z = (f*T)/d -> T(distnace between cams), d(disparity) f=1
     Z = T*(ones(size(D_out)))./(D_out+100);
     figure;
