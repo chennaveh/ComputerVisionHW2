@@ -22,6 +22,7 @@ S_R = p_r*pinv(MR)';
 S_L(:,4)= double(S_L(:,4)==zeros(size(S_L(2),1))) + S_L(:,4); %in case of a point in infinity
 S_R(:,4)= double(S_R(:,4)==zeros(size(S_R(2),1))) + S_R(:,4); %in case of a point in infinity
 
+
 S_L_nh = S_L(:,1:3)./repmat(S_L(:,4),1,3);
 S_R_nh = S_R(:,1:3)./repmat(S_R(:,4),1,3);
 
@@ -32,8 +33,8 @@ U_R = S_R_nh-COP_R';
 dominator = (COP_L-COP_R);
 for x=1:m
     Labmda = [(-1)*U_L(x,:);U_R(x,:)]'\dominator ;% TODO - make sure this is true!
-    PL(x,:) = COP_L' + (Labmda(1))*(S_L_nh(x,:));
-    PR(x,:) = COP_R' + (Labmda(2))*(S_R_nh(x,:));
+    PL(x,:) = COP_L' + (Labmda(1))*(U_L(x,:));
+    PR(x,:) = COP_R' + (Labmda(2))*(U_R(x,:));
 end
 
 P = ((PR + PL)/2);%find the avarage between reconstruction of left and right
